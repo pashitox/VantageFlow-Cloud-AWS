@@ -1,12 +1,14 @@
-# 1. IAM Role para Lambda
+############################################
+# 1. IAM ROLE PARA LAMBDA
+############################################
 resource "aws_iam_role" "lambda_exec_role" {
   name = "vantageflow-lambda-role"
-  
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
       Effect = "Allow"
+      Action = "sts:AssumeRole"
       Principal = {
         Service = "lambda.amazonaws.com"
       }
@@ -14,55 +16,48 @@ resource "aws_iam_role" "lambda_exec_role" {
   })
 }
 
-# 2. Política básica para S3
+############################################
+# 2. PERMISOS S3 (LECTURA + ESCRITURA)
+############################################
 resource "aws_iam_role_policy_attachment" "lambda_s3" {
   role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-# 3. Política para CloudWatch Logs
+############################################
+# 3. PERMISOS CLOUDWATCH LOGS
+############################################
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-# 4. Lambda Function CON ZIP
+############################################
+# 4. FUNCIÓN LAMBDA (ETL IOT)
+############################################
 resource "aws_lambda_function" "process_iot" {
   function_name = "vantageflow-process-iot"
-  role          = aws_iam_role.lambda_exec_role.arn
   handler       = "process_iot_data.lambda_handler"
-  runtime       = "python3.12"
-  timeout       = 10
-  
-  # Usar archivo ZIP (¡IMPORTANTE!)
-  filename         = "${path.module}/../lambda/process_iot.zip"
-  source_code_hash = filebase64sha256("${path.module}/../lambda/process_iot.zip")
-  
+  runtime       = "python3.11"
+  role          = aws_iam_role.lambda_exec_role.arn
+
+  filename         = "../lambda/process_iot.zip"
+  source_code_hash = filebase64sha256("../lambda/process_iot.zip")
+
+  memory_size = 512
+  timeout     = 60
+
   environment {
     variables = {
-      PROJECT = "VantageFlow"
+      STAGE = "dev"
     }
   }
 }
 
-# 5. Outputs para verificar
-output "lambda_name" {
-  value = aws_lambda_function.process_iot.function_name
-}
 
-output "lambda_arn" {
-  value = aws_lambda_function.process_iot.arn
-}
-
-output "lambda_url" {
-  value = "https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/${aws_lambda_function.process_iot.function_name}"
-}
-
-# ============================================
-# TRIGGER AUTOMÁTICO S3 -> LAMBDA
-# ============================================
-
-# Permiso para que S3 pueda invocar Lambda
+############################################
+# 5. PERMITIR QUE S3 INVOQUE LAMBDA
+############################################
 resource "aws_lambda_permission" "allow_s3" {
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
@@ -71,20 +66,37 @@ resource "aws_lambda_permission" "allow_s3" {
   source_arn    = aws_s3_bucket.vantageflow_data_lake.arn
 }
 
-# Configurar notificación del bucket S3
+############################################
+# 6. TRIGGER AUTOMÁTICO S3 → LAMBDA
+############################################
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.vantageflow_data_lake.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.process_iot.arn
-    events              = ["s3:ObjectCreated:*"]  # Cuando se crea archivo
-    filter_prefix       = "bronze/"              # Solo en carpeta bronze
-    filter_suffix       = ".csv"                 # Solo archivos CSV
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = "bronze/"
+    filter_suffix       = ".csv"
   }
 
   depends_on = [aws_lambda_permission.allow_s3]
 }
 
+############################################
+# 7. OUTPUTS (VERIFICACIÓN)
+############################################
+output "lambda_name" {
+  value = aws_lambda_function.process_iot.function_name
+}
+
+output "lambda_arn" {
+  value = aws_lambda_function.process_iot.arn
+}
+
+output "lambda_console_url" {
+  value = "https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions/${aws_lambda_function.process_iot.function_name}"
+}
+
 output "pipeline_status" {
-  value = "🚀 Pipeline S3→Lambda CONFIGURADO. ¡Ahora es automático!"
+  value = "🚀 Pipeline S3 → Lambda → Silver ACTIVO"
 }
