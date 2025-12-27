@@ -1,0 +1,16 @@
+{
+  "Records": [
+    {
+      "eventSource": "aws:s3",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "bucket": {
+          "name": "vantageflow-dev-data-lake-21bcb50a"
+        },
+        "object": {
+          "key": "silver/reprocess_gold.csv"
+        }
+      }
+    }
+  ]
+}

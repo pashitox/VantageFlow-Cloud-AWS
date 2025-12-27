@@ -1,0 +1,7 @@
+timestamp,device_id,device_type,location,value,unit,status,anomaly_score
+2024-01-01 10:00:00.000,FAB-TEM-001,temperature_sensor,FABRICA-A,25.5,°C,NORMAL,0.1
+2024-01-01 10:05:00.000,FAB-TEM-001,temperature_sensor,FABRICA-A,30.2,°C,WARNING,0.8
+2024-01-01 10:10:00.000,FAB-TEM-001,temperature_sensor,FABRICA-A,22.8,°C,NORMAL,0.2
+2024-01-01 10:15:00.000,FAB-HUM-001,humidity_sensor,FABRICA-A,45.0,%,NORMAL,0.3
+2024-01-01 10:20:00.000,FAB-HUM-001,humidity_sensor,FABRICA-A,65.0,%,WARNING,0.7
+2024-01-01 10:25:00.000,FAB-PRS-001,pressure_sensor,FABRICA-A,100.5,psi,NORMAL,0.4

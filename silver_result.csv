@@ -1,0 +1,4 @@
+sensor_id,timestamp,value,anomaly_score,unit,status
+FACTORY_A_001,2024-01-01T08:00:00,75.5,0.1,°C,normal
+FACTORY_B_001,2024-01-01T08:10:00,45.0,0.2,%,normal
+FACTORY_A_001,2024-01-01T08:15:00,76.0,0.3,°C,normal

@@ -1,0 +1,1 @@
+{"statusCode": 200, "body": "{\"message\": \"Procesamiento Gold completado\", \"gold_file\": \"gold/reprocess_gold.csv\", \"sensors_processed\": 1}"}
