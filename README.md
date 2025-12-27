@@ -230,4 +230,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ⭐ **If you find this project useful, please give it a star on GitHub!** ⭐
 
-> **Pro Tip for Interviews**: This project demonstrates not just technical skills, but also cost awareness, production thinking, and problem-solving abilities - exactly what hiring managers look for in senior data engineering roles.
