@@ -1,0 +1,46 @@
+{
+    "FunctionName": "vantageflow-silver-to-gold",
+    "FunctionArn": "arn:aws:lambda:us-east-1:165518479619:function:vantageflow-silver-to-gold",
+    "Runtime": "python3.11",
+    "Role": "arn:aws:iam::165518479619:role/vantageflow-lambda-role",
+    "Handler": "process_silver_to_gold.lambda_handler",
+    "CodeSize": 2361,
+    "Description": "",
+    "Timeout": 120,
+    "MemorySize": 512,
+    "LastModified": "2025-12-27T12:44:24.000+0000",
+    "CodeSha256": "NAdUzgy4nKTVt0sydhk2vU4XluKna8n4pQ44q9mwWn8=",
+    "Version": "$LATEST",
+    "Environment": {
+        "Variables": {
+            "STAGE": "dev",
+            "LOG_LEVEL": "INFO"
+        }
+    },
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "17e7bf5a-ac3b-4bde-be3b-8288a248ea51",
+    "State": "Active",
+    "LastUpdateStatus": "InProgress",
+    "LastUpdateStatusReason": "The function is being created.",
+    "LastUpdateStatusReasonCode": "Creating",
+    "PackageType": "Zip",
+    "Architectures": [
+        "x86_64"
+    ],
+    "EphemeralStorage": {
+        "Size": 512
+    },
+    "SnapStart": {
+        "ApplyOn": "None",
+        "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+        "RuntimeVersionArn": "arn:aws:lambda:us-east-1::runtime:49f733259c7ce7e0deee75ff91c6afe35c7d58b04ed300f32701216263b4590c"
+    },
+    "LoggingConfig": {
+        "LogFormat": "Text",
+        "LogGroup": "/aws/lambda/vantageflow-silver-to-gold"
+    }
+}

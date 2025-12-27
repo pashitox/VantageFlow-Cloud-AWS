@@ -1,0 +1,42 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["VantageFlow/BronzeToSilver", "RowsProcessed", { "label": "Bronze→Silver" }],
+          ["VantageFlow/SilverToGold", "RowsProcessed", { "label": "Silver→Gold" }]
+        ],
+        "period": 300,
+        "stat": "Sum",
+        "region": "us-east-1",
+        "title": "📈 Filas Procesadas por Lambda",
+        "view": "timeSeries",
+        "stacked": false
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["VantageFlow/BronzeToSilver", "AnomalyPercentage", { "label": "Bronze Anomalies" }],
+          ["VantageFlow/SilverToGold", "AnomalyPercentage", { "label": "Gold Anomalies" }]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "us-east-1",
+        "title": "⚠️  Porcentaje de Anomalías",
+        "view": "timeSeries",
+        "stacked": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+timestamp,device_id,device_type,location,value,unit,status,anomaly_score
+2024-01-01 14:00:00.000,DEV-CW-001,temperature_sensor,FABRICA-A,22.5,°C,NORMAL,0.2
+2024-01-01 14:05:00.000,DEV-CW-001,temperature_sensor,FABRICA-A,85.0,°C,CRITICAL,0.95
+2024-01-01 14:10:00.000,DEV-CW-002,humidity_sensor,FABRICA-B,55.0,%,NORMAL,0.3
+2024-01-01 14:15:00.000,DEV-CW-003,pressure_sensor,FABRICA-C,120.0,psi,WARNING,0.7

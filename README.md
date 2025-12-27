@@ -1,233 +1,147 @@
-# 🚀 VantageFlow Cloud AWS - IoT Data Pipeline
+#  VantageFlow Cloud AWS - IoT Data Pipeline
 
-![AWS](https://img.shields.io/badge/AWS-S3%20%7C%20Lambda%20%7C%20CloudWatch-orange)
-![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![Terraform](https://img.shields.io/badge/Infrastructure-Terraform-purple)
-![Architecture](https://img.shields.io/badge/Architecture-Data%20Lake-green)
-![License](https://img.shields.io/badge/License-MIT-yellow)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
+![AWS](https://img.shields.io/badge/AWS-S3%20%7C%20Lambda%20%7C%20CloudWatch-FF9900?logo=amazonaws)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python)
+![Terraform](https://img.shields.io/badge/Terraform-1.5+-7B42BC?logo=terraform)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?logo=streamlit)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
+![Cost](https://img.shields.io/badge/Cost-%241--3%2Fmonth-success)
 
-A production-ready serverless IoT data pipeline on AWS with a modern Data Lake architecture (bronze/silver/gold). Perfect for demonstrating real-world data engineering skills in interviews.
+A production-ready serverless IoT data pipeline on AWS. Modern Data Lake architecture with real-time processing and monitoring dashboard.
 
-## ✨ Features
-
-- ✅ **Modern Data Lake**: Bronze/Silver/Gold architecture in S3
-- ✅ **Serverless ETL**: Automated Lambda functions with S3 triggers
-- ✅ **Real-time Processing**: Streaming data ingestion and processing
-- ✅ **Anomaly Detection**: Automatic separation of suspicious data
-- ✅ **Cost Optimized**: ~$1-3/month on AWS Free Tier
-- ✅ **Infrastructure as Code**: Terraform for all AWS resources
-- ✅ **Production Monitoring**: CloudWatch logs and metrics
-- ✅ **Professional Dashboard**: Streamlit real-time monitoring
-
-## 🏗️ Architecture
+## 📊 Data Flow
 
 ```mermaid
-graph TD
-    A[IoT Devices] --> B[S3 Bronze<br/>Raw Data]
+flowchart TD
+    A[IoT Devices] --> B[S3 Bronze<br/>Raw CSV Data]
     B --> C[Lambda Processor<br/>Clean & Validate]
     C --> D[S3 Silver<br/>Cleaned Data]
     C --> E[S3 Anomalies<br/>Suspicious Data]
     D --> F[Lambda Aggregator<br/>Group by Device]
     F --> G[S3 Gold<br/>Aggregated Stats]
-    G --> H[Dashboard<br/>Real-time Monitoring]
-    
-    style A fill:#e1f5fe
-    style B fill:#fff3e0
-    style D fill:#f3e5f5
-    style G fill:#e8f5e8
+    G --> H[📊 Streamlit Dashboard]
+    G --> I[Power BI / Tableau]
 ```
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- AWS Account with Free Tier
-- AWS CLI configured (`aws configure`)
-- Python 3.11+
-- Terraform 1.5+
-
-### Deployment (5 minutes)
-
 ```bash
-# 1. Clone repository
+# Clone & deploy
 git clone https://github.com/yourusername/vantageflow-aws.git
 cd vantageflow-aws
 
-# 2. Deploy infrastructure
+# Deploy infrastructure
 make deploy
 
-# 3. Test the pipeline
+# Test pipeline
 make test
 
-# 4. Monitor results
-make monitor
+# Launch dashboard
+make dashboard
 ```
 
-## 📊 Expected Results
+## 🏗️ Architecture
 
-After running the ingestion, you'll have:
+### **Data Layers**
+| Layer | Purpose | Format |
+|-------|---------|---------|
+| **Bronze** | Raw IoT data | CSV files |
+| **Silver** | Cleaned & validated | CSV files |
+| **Gold** | Aggregated statistics | CSV files |
+| **Anomalies** | Suspicious data | CSV files |
 
-| Layer | Purpose | Example Files |
-|-------|---------|---------------|
-| **Bronze** | Raw IoT data | `iot_batch_1_20241227_123150.csv` |
-| **Silver** | Cleaned & validated data | `iot_batch_1_20241227_123150.csv` |
-| **Gold** | Aggregated statistics | `iot_batch_1_20251227_123150.csv` |
-| **Anomalies** | Suspicious data | `iot_batch_1_20251227_123150.csv` |
+### **AWS Services**
+- **Amazon S3** - Data Lake storage
+- **AWS Lambda** - Serverless processing
+- **CloudWatch** - Monitoring & metrics
+- **IAM** - Security & permissions
+- **Terraform** - Infrastructure as Code
 
-**Example Gold File:**
+## 📈 Sample Output
+
+**Gold Layer Data:**
 ```csv
-device_id,total_readings,avg_value,min_value,max_value,anomaly_count,anomaly_percentage
-FAB-TEM-001,15,28.5,22.0,35.0,2,13.3
-FAB-HUM-001,10,52.3,45.0,65.0,1,10.0
-FAB-PRS-001,8,108.7,95.0,125.0,0,0.0
+device_id,total_readings,avg_value,anomaly_percentage
+DEV-001,150,28.5,12.3
+DEV-002,230,45.2,8.7
+DEV-003,89,32.1,25.4
 ```
 
 ## 💰 Cost Optimization
 
-| Service | Free Tier | Production | Optimization Strategy |
-|---------|-----------|------------|----------------------|
-| **S3 Storage** | 5GB x 12 months | $0.023/GB | Lifecycle policies, compression |
-| **Lambda** | 1M invocations/month | $0.20/1M | Optimized timeout & memory |
-| **CloudWatch** | 5GB logs/month | $0.50/GB | 7-day retention policy |
-| **API Gateway** | 1M calls/month | $3.50/1M | Caching, usage plans |
-| **Total Monthly** | **$1-3** | **$10-20** | Automated cleanup |
-
-**Cost-saving commands:**
-```bash
-# Destroy resources when not in use
-make destroy
-
-# Clean S3 while keeping structure
-aws s3 rm s3://your-bucket/bronze/ --recursive --exclude ".keep"
-
-# Reduce CloudWatch log retention
-aws logs put-retention-policy \
-  --log-group-name /aws/lambda/vantageflow-process-iot \
-  --retention-in-days 7
-```
+| Service | Free Tier | Production | Strategy |
+|---------|-----------|------------|----------|
+| S3 Storage | 5GB × 12 months | $0.023/GB | Lifecycle policies |
+| Lambda | 1M invocations/month | $0.20/1M | Optimized timeout |
+| CloudWatch | 5GB logs/month | $0.50/GB | 7-day retention |
+| **Total** | **$1-3/month** | **$10-20/month** | 85% savings |
 
 ## 📁 Project Structure
 
 ```
 vantageflow-aws/
-├── cloud-infrastructure/     # AWS Infrastructure as Code
-│   ├── terraform/           # Terraform modules
-│   │   ├── main.tf          # S3, Lambdas, IAM
-│   │   ├── variables.tf     # Environment configuration
-│   │   └── outputs.tf       # Generated URLs and ARNs
-│   └── lambda/              # Serverless functions
-│       ├── process_iot_data.py       # Bronze → Silver
-│       └── process_silver_to_gold.py # Silver → Gold
-│
-├── data-pipeline/           # Data ingestion & processing
-│   ├── 01_ingestion/        # Data generation & upload
-│   │   ├── ingesta_manual.py    # Manual data ingestion
-│   │   ├── clean_start.sh       # Clean environment script
-│   │   └── Makefile             # Pipeline commands
-│   └── 02_processing/       # Data transformation logic
-│
-├── 05_api_serverless/       # API & Monitoring
-│   └── frontend_demo/       # Real-time dashboard
-│       └── dashboard.py     # Streamlit monitoring UI
-│
-├── 08_documentation/        # Interview preparation
-│   ├── ARCHITECTURE.md      # System architecture details
-│   ├── COST_OPTIMIZATION.md # AWS cost management
-│   └── DEMO_SCENARIOS.md    # Interview demonstration scripts
-│
-├── Makefile                 # Global project commands
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
+├── cloud-infrastructure/  # AWS Infrastructure
+│   ├── terraform/        # Terraform configs
+│   └── lambda/           # Lambda functions
+├── data-pipeline/        # ETL scripts
+├── dashboard/            # Streamlit UI
+├── documentation/        # Architecture & guides
+├── Makefile             # Project commands
+└── README.md           # This file
 ```
 
-## 🛠️ Available Commands
+## 🛠️ Commands
 
 ```bash
-make deploy      # Deploy entire infrastructure to AWS
-make destroy     # Destroy AWS resources (save costs)
-make test        # Run complete pipeline test
-make monitor     # Monitor real-time logs
-make dashboard   # Launch monitoring dashboard
-make docs        # Generate portfolio documentation
-make clean       # Clean temporary files
+make deploy    # Deploy to AWS
+make destroy   # Remove resources
+make test      # Test pipeline
+make monitor   # View logs
+make dashboard # Launch UI
+make clean     # Clean up
 ```
 
-## 🎯 For Technical Interviews
+## 🔧 Tech Stack
 
-### What This Project Demonstrates:
-- **Real AWS Experience**: S3, Lambda, IAM, CloudWatch, Terraform
-- **Modern Data Architecture**: Data Lake with bronze/silver/gold layers
-- **Production Thinking**: Cost optimization, monitoring, error handling
-- **Infrastructure as Code**: Terraform for reproducible deployments
-- **Problem Solving**: Fixed critical `sensor_id` → `device_id` aggregation bug
+- **AWS**: S3, Lambda, CloudWatch, IAM
+- **Languages**: Python 3.11
+- **IaC**: Terraform
+- **Dashboard**: Streamlit, Plotly
+- **CI/CD**: GitHub Actions
 
+## 📊 Metrics & Monitoring
 
+**CloudWatch Metrics:**
+- `RowsProcessed` - Total records
+- `AnomalyPercentage` - Anomaly rate
+- `ProcessingTime` - Execution speed
+- `DevicesProcessed` - Unique devices
 
-### Demonstration Script:
-```bash
-# Show architecture
-cat 08_documentation/ARCHITECTURE.md
+**Real-time Dashboard:**
+- Live pipeline status
+- Data visualization
+- Device analytics
+- Cost monitoring
 
-# Demonstrate working pipeline
-make test
+## 🎯 Use Cases
 
-# Show cost optimization strategy
-cat 08_documentation/COST_OPTIMIZATION.md | head -20
-
-# Display real-time dashboard
-make dashboard
-```
-
-## 🔧 Technical Details
-
-### AWS Services Used:
-- **Amazon S3**: Data Lake storage (bronze/silver/gold/anomalies)
-- **AWS Lambda**: Serverless data processing (Python 3.11)
-- **IAM**: Secure role-based access control
-- **CloudWatch**: Logging, monitoring, and alerts
-- **Terraform**: Infrastructure as Code management
-
-### Key Components:
-1. **Data Ingestion**: Manual/automated CSV upload to S3 Bronze
-2. **Bronze → Silver**: Data cleaning, validation, anomaly detection
-3. **Silver → Gold**: Aggregation by device_id, statistical calculations
-4. **Monitoring**: Real-time dashboard with Streamlit
-5. **Cost Control**: Automated cleanup scripts, Free Tier optimization
-
-## 📈 Performance Metrics
-
-- **Processing Time**: 100-170ms per Lambda execution
-- **Data Volume**: Tested with 10,000+ IoT records
-- **Concurrency**: Handles multiple simultaneous uploads
-- **Cost Efficiency**: $0.00001667 per Lambda execution
-
-## 🚨 Error Handling
-
-The pipeline includes:
-- **Retry Logic**: Automatic retry for transient failures
-- **Dead Letter Queue**: Failed messages sent to S3 for analysis
-- **Anomaly Detection**: Suspicious data separated automatically
-- **Comprehensive Logging**: Every step logged to CloudWatch
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- **IoT Data Processing** - Real-time sensor data
+- **Data Quality** - Anomaly detection & cleaning
+- **Business Intelligence** - Ready for BI tools
+- **Portfolio Project** - AWS skills demonstration
+- **Interview Prep** - Technical showcase
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file.
 
-## 🙏 Acknowledgments
+---
 
-- AWS Free Tier for making cloud learning accessible
-- Terraform community for excellent documentation
-- Streamlit for simple yet powerful dashboard creation
+<div align="center">
 
+**⭐ If you find this useful, please give it a star!**
 
-⭐ **If you find this project useful, please give it a star on GitHub!** ⭐
+**Built with ❤️ by [Your Name](https://github.com/yourusername)**
 
-> **Pro Tip for Interviews**: This project demonstrates not just technical skills, but also cost awareness, production thinking, and problem-solving abilities - exactly what hiring managers look for in senior data engineering roles.
+</div>
