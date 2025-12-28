@@ -132,16 +132,9 @@ make clean     # Clean up
 - **Portfolio Project** - AWS skills demonstration
 - **Interview Prep** - Technical showcase
 
-## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
-<div align="center">
 
-**⭐ If you find this useful, please give it a star!**
 
-**Built with ❤️ by [Your Name](https://github.com/yourusername)**
-
-</div>
