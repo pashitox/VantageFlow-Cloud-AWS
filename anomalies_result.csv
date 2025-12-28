@@ -1,3 +1,0 @@
-sensor_id,timestamp,value,anomaly_score,unit,status
-FACTORY_A_002,2024-01-01T08:05:00,120.5,0.9,psi,anomaly_detected
-FACTORY_B_002,2024-01-01T08:20:00,85.0,0.8,psi,anomaly_detected
